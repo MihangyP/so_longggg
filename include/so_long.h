@@ -8,13 +8,6 @@
 #include <raylib.h>
 #include "../libft/libft.h"
 
-/* point */
-typedef struct
-{
-	int	x;
-	int	y;
-}	t_point;
-
 /* size of a square*/
 #define SQUARE_SIZE 40
 
@@ -25,6 +18,23 @@ typedef struct
 #define WALL_COLOR BLACK
 #define EXIT_COLOR BLUE
 
+/* point */
+typedef struct
+{
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct
+{
+	size_t	nbr_collectibles;
+	size_t	move_counter;
+	char	**map;
+	int		player_eye_left;
+	int		player_eye_right;
+	int		eye_width;
+}	t_game;
+
 /* errors */
 void	handle_errors(int ac, char **av);
 
@@ -34,7 +44,7 @@ size_t	calc_width(char **map);
 size_t	calc_height(char **map);
 
 /* draw map in window*/
-void	draw_map(char **map);
+void	draw_map(t_game *game);
 
 /* free memory */
 void	free_map(char **map);
