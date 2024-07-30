@@ -1,5 +1,25 @@
 #include <so_long.h>
 
+size_t	calc_width(char **map)
+{
+	size_t	width;
+
+	width = 0;
+	while (map[0][width] != '\n')
+		++width;
+	return (width);
+}
+
+size_t	calc_height(char **map)
+{
+	size_t	height;
+
+	height = 0;
+	while (map[height])
+		++height;
+	return (height);
+}
+
 static size_t	count_map_lines(const char *file_path)
 {
 	int		fd;
@@ -14,7 +34,7 @@ static size_t	count_map_lines(const char *file_path)
 		if (*buffer == '\n')
 			++counter;
 	}
-	close(file_path);
+	close(fd);
 	// TODO: check if close return an error
 	return (counter);
 }
@@ -33,12 +53,13 @@ char	**catch_map(const char *file_path)
 		return (NULL);
 	fd = open(file_path, O_RDONLY);
 	i = 0;
-	while (s = get_next_line(fd))
+	while ((s = get_next_line(fd)))
 	{
 		res[i] = s;
 		++i;
-		free(s);
 	}
+	res[i] = NULL;
+	free(s);
 	close(fd);
 	return (res);
 }

@@ -5,12 +5,38 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <raylib.h>
 #include "../libft/libft.h"
+
+/* point */
+typedef struct
+{
+	int	x;
+	int	y;
+}	t_point;
+
+/* size of a square*/
+#define SQUARE_SIZE 40
+
+/* colors */
+#define BACKGROUND_COLOR GREEN
+#define PLAYER_COLOR WHITE
+#define COLLECTIBLE_COLOR GOLD
+#define WALL_COLOR BLACK
+#define EXIT_COLOR BLUE
 
 /* errors */
 void	handle_errors(int ac, char **av);
 
-/* catch map */
+/*  map manip */
 char	**catch_map(const char *file_name);
+size_t	calc_width(char **map);
+size_t	calc_height(char **map);
+
+/* draw map in window*/
+void	draw_map(char **map);
+
+/* free memory */
+void	free_map(char **map);
 
 #endif
