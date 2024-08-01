@@ -44,7 +44,10 @@ void	move(t_game *game, t_point player_position, char c)
 	if (game->map[new_y][new_x] != '1')
 	{
 		if (game->map[new_y][new_x] == 'C')
+		{
 			(game->nbr_collectibles)--;
+			(game->score)++;
+		}
 		if (game->map[new_y][new_x] == 'E' && game->nbr_collectibles == 0)
 			exit(0);
 		if (game->map[new_y][new_x] == 'E' && game->nbr_collectibles != 0)
@@ -60,13 +63,19 @@ void	move(t_game *game, t_point player_position, char c)
 		{
 			game->player_eye_left -= 5;
 			game->player_eye_right -= 5;
-			game->eye_width = 3;
+			if (!game->player_eye_left)
+				game->eye_width = 0;
+			else
+				game->eye_width = 3;
 		}
 		else if (c == 'r' && (!game->player_eye_left || !game->player_eye_right || game->player_eye_left == -5))
 		{
 			game->player_eye_left += 5;
 			game->player_eye_right += 5;
-			game->eye_width = 3;
+			if (!game->player_eye_left)
+				game->eye_width = 0;
+			else
+				game->eye_width = 3;
 		}
 		(game->move_counter)++;
 		ft_printf("move: %d\n", game->move_counter);
@@ -85,6 +94,16 @@ void	update_frame(t_game *game)
 	BeginDrawing();
 	ClearBackground(BACKGROUND_COLOR);
 	draw_map(game);
+	// Stat
+	{
+		DrawRectangle(GetScreenWidth() - 170, 10, 150, 70, Fade(RED, .5f));
+		DrawRectangleLines(GetScreenWidth() - 170, 10, 150, 70, RED);
+		if (IsFontReady(game->font))
+		{
+			DrawTextEx(game->font, "Score", (Vector2){ GetScreenWidth() - 120, 20}, 30.0, 1.0, WHITE);
+			DrawTextEx(game->font, ft_itoa(game->score), (Vector2){GetScreenWidth() - 100, 50}, 25, 1.0, WHITE);
+		}
+	}
 	EndDrawing();
 }
 
@@ -108,6 +127,17 @@ size_t	count_collectibles(char **map)
 	return (counter);
 }
 
+void	init_data(t_game *game, Font jbm)
+{
+	game->move_counter = 0;
+	game->nbr_collectibles = count_collectibles(game->map);
+	game->player_eye_left = 0;
+	game->player_eye_right = 0;
+	game->eye_width = 0;
+	game->score = 0;
+	game->font = jbm;
+}
+
 int main(int ac, char **av)
 {
 	t_game	game;
@@ -122,15 +152,13 @@ int main(int ac, char **av)
 	window_height = SQUARE_SIZE * calc_height(game.map);
 	InitWindow(window_width, window_height, "So long");
 	SetTargetFPS(60);
-	game.move_counter = 0;
-	game.nbr_collectibles = count_collectibles(game.map);
-	game.player_eye_left = 0;
-	game.player_eye_right = 0;
-	game.eye_width = 0;
+	Font jbm = LoadFont("JetBrainsMonoNerdFontMono-Bold.ttf");
+	init_data(&game, jbm);
 	while (!WindowShouldClose())
 	{
 		update_frame(&game);
 	}
+	UnloadFont(jbm);
 	CloseWindow();
 	free_map(game.map);
 	return (0);

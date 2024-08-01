@@ -2,7 +2,7 @@
 
 static void	draw_item(t_game *game, char item, int pos_x, int pos_y, int width, int height)
 {
-	Color color;
+	Color		color;
 
 	color = BACKGROUND_COLOR;
 	if (item == '1')
@@ -20,15 +20,30 @@ static void	draw_item(t_game *game, char item, int pos_x, int pos_y, int width, 
 	}
 
 	if (item == 'C')
-		DrawCircle(pos_x + SQUARE_SIZE/2, pos_y + SQUARE_SIZE/2, SQUARE_SIZE/2, color);
-	else
-		DrawRectangle(pos_x, pos_y, width, height, color);
-	if (item == 'P')
+	{
+		Rectangle	rec = {(float)(pos_x + 5), (float)(pos_y + 5), (float)(width - 10), (float)(height - 10)};
+		DrawRectangle(pos_x + 5, pos_y + 5, width - 10, height - 10, color);
+		DrawRectangleLinesEx(rec, 2, BLACK);
+	}
+	else if (item == 'E')
+	{
+		Rectangle	rec = {(float)(pos_x + 5), (float)(pos_y + 5), (float)(width - 10), (float)(height - 10)};
+		DrawRectangle(pos_x + 5, pos_y + 5, width - 10, height - 10, color);
+		if (game->nbr_collectibles == 0)
+			DrawRectangleLinesEx(rec, 2, BLACK);
+
+	}
+	else if (item == 'P')
 	{
 		int d = game->eye_width;
+		Rectangle	rec = {(float)pos_x, (float)pos_y, (float)width, (float)height};
+		DrawRectangle(pos_x, pos_y, width, height, color);
+		DrawRectangleLinesEx(rec, 2.0, BLACK);
 		DrawRectangle(pos_x + 10 + game->player_eye_left, pos_y + 7, 7 - d, 7, BLACK);
 		DrawRectangle(pos_x + SQUARE_SIZE - 7 - 10 + game->player_eye_right, pos_y + 7, 7 - d, 7 , BLACK);
 	}
+	else
+		DrawRectangle(pos_x, pos_y, width, height, color);
 }
 
 void	draw_map(t_game *game)

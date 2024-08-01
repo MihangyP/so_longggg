@@ -12,11 +12,11 @@
 #define SQUARE_SIZE 40
 
 /* colors */
-#define BACKGROUND_COLOR GREEN
+#define BACKGROUND_COLOR SKYBLUE
 #define PLAYER_COLOR WHITE
-#define COLLECTIBLE_COLOR GOLD
+#define COLLECTIBLE_COLOR RED
 #define WALL_COLOR BLACK
-#define EXIT_COLOR BLUE
+#define EXIT_COLOR GOLD
 
 /* point */
 typedef struct
@@ -33,6 +33,8 @@ typedef struct
 	int		player_eye_left;
 	int		player_eye_right;
 	int		eye_width;
+	int		score;
+	Font	font;
 }	t_game;
 
 /* errors */
