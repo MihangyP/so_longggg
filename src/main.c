@@ -78,7 +78,6 @@ void	move(t_game *game, t_point player_position, char c)
 				game->eye_width = 3;
 		}
 		(game->move_counter)++;
-		ft_printf("move: %d\n", game->move_counter);
 	}
 }
 
@@ -100,8 +99,8 @@ void	update_frame(t_game *game)
 		DrawRectangleLines(GetScreenWidth() - 170, 10, 150, 70, RED);
 		if (IsFontReady(game->font))
 		{
-			DrawTextEx(game->font, "Score", (Vector2){ GetScreenWidth() - 120, 20}, 30.0, 1.0, WHITE);
-			DrawTextEx(game->font, ft_itoa(game->score), (Vector2){GetScreenWidth() - 100, 50}, 25, 1.0, WHITE);
+			DrawTextEx(game->font, "Move", (Vector2){ GetScreenWidth() - 120, 20}, 30.0, 1.0, WHITE);
+			DrawTextEx(game->font, ft_itoa(game->move_counter), (Vector2){GetScreenWidth() - 100, 50}, 25, 1.0, WHITE);
 		}
 	}
 	EndDrawing();
@@ -152,7 +151,7 @@ int main(int ac, char **av)
 	window_height = SQUARE_SIZE * calc_height(game.map);
 	InitWindow(window_width, window_height, "So long");
 	SetTargetFPS(60);
-	Font jbm = LoadFont("JetBrainsMonoNerdFontMono-Bold.ttf");
+	Font jbm = LoadFont("./ressources/JetBrainsMonoNerdFontMono-Bold.ttf");
 	init_data(&game, jbm);
 	while (!WindowShouldClose())
 	{
